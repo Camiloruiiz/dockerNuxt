@@ -1,3 +1,4 @@
+### https://hashinteractive.com/blog/docker-multi-stage-build-for-nuxt-generate/
 ### STAGE 1: Build ###
 FROM node:16.14.0 as build
 RUN mkdir /usr/src/app
@@ -10,6 +11,6 @@ RUN npm run generate
 
 ### STAGE 2: NGINX ###
 FROM nginx:stable-alpine
-COPY --from=build /usr/src/app/public_html /usr/share/nginx/html
+COPY --from=build /usr/src/app/docker /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,13 @@
+version: "3.4"
+
+services:
+  web:
+    container_name: "${APP_NAME}"
+    build:
+      context: ".."
+      dockerfile: "docker/web/Dockerfile"
+    ports:
+        - "${PORT}:80"
+    volumes:
+        - ./web/nginx.conf:/etc/nginx/nginx.conf
+        - ./:/usr/share/nginx/html/:ro

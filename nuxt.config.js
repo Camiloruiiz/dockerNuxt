@@ -18,7 +18,7 @@ export default {
   },
 
   generate: {
-    dir: "public_html",
+    dir: "docker/public_html",
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

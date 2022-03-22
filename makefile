@@ -18,19 +18,31 @@ VERSION=$(shell ./version.sh)
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 build: ## Build docker image
-	docker build -t $(APP_TAG) .
+	docker build -t $(APP_TAG) ./docker/web
 build-nc: ## Build the container without caching
-	docker build --no-cache -t $(APP_TAG) .
+	docker build --no-cache -t $(APP_TAG) ./docker/web
 run2: ## Run container on port configured in `config.env`
 	docker run -i -t --rm --env-file=./config.env -p=$(PORT):$(PORT) --name="$(APP_NAME)" $(APP_NAME)
 run: ## Run docker image
-	docker run --name $(APP_NAME) --rm -d -p $(PORT):80 $(APP_TAG)
+	docker run --name $(APP_NAME) \
+  --rm -d -p $(PORT):80 \
+  -v $(pwd)/docker:/usr/share/nginx/html/:ro \
+  -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf \
+  $(APP_TAG)
 up: build run ## Run container on port configured in `config.env` (Alias to run)
 stop: ## Stop and remove a running container
-	docker stop $(APP_NAME); docker rm $(APP_NAME)
-c-build:
-	@docker-compose build
-c-up:
-	@docker-compose up -d
+	docker stop $(APP_TAG); docker rm $(APP_TAG)
+delete:
+	docker rmi -f nuxtnginx_web && docker image prune
+exec: ## Get inside the container
+	docker exec -it $(APP_NAME) /bin/sh
+c-build: ## Build docker image using docker-compose
+	@docker-compose -f ./docker/docker-compose.yml -p $(APP_TAG) build
+c-build-nc: ## Build the container without caching using docker-compose
+	@docker-compose -f ./docker/docker-compose.yml -p $(APP_TAG) build --no-cache
+c-up: ## Run containers from compose file using docker-comose
+	@docker-compose -f ./docker/docker-compose.yml -p $(APP_TAG) up -d
+c-logs: ## Show container logs
+	@docker-compose -f ./docker/docker-compose.yml -p $(APP_TAG) logs -f
 
 .DEFAULT_GOAL := help

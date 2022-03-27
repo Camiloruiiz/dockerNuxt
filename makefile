@@ -42,6 +42,7 @@ c-build-nc: ## Build the container without caching using docker-compose.
 	@docker-compose -f ./docker/docker-compose.yml -p $(APP_TAG) build --no-cache $(c)
 c-up: ## Run containers from compose file using docker-compose.
 	@docker-compose -f ./docker/docker-compose.yml -p $(APP_TAG) up -d $(c)
+c-dev: stop delete c-build-nc c-up ## Delete and build the image from scrach.
 c-down: ## Set down containers from compose file using docker-compose.
 	@docker-compose -f ./docker/docker-compose.yml -p $(APP_TAG) down $(c)
 c-destroy: ## Destroy containers from compose file using docker-compose.

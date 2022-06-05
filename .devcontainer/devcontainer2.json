@@ -1,0 +1,76 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.205.1/containers/docker-existing-dockerfile
+{
+  "name": "Remote Pi workspace",
+
+  // Sets the run context to one level up instead of the .devcontainer folder.
+  "context": "..",
+
+  // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+  "dockerFile": "../docker/web/Dockerfile",
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {},
+
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=/home/maximiix/dev,target=/workspace,type=bind,consistency=cached",
+
+  // Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+  // Implementing DIND (Docker in Docker)
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  //"appPort": [5000], // only exposed locally on the machine with 127.0.0.1
+  "runArgs": ["--privileged", "-P"],
+  // Set to "none" if you want to keep your containers running after VS Code shuts down.
+  // Set to "stopCompose" to close containers running after VS Code shuts down.
+  "shutdownAction": "none",
+
+  // Uncomment the next line to run commands after the container is created - for example installing curl.
+  // "postCreateCommand": "npm i && npm run dev"
+  "postCreateCommand": "npm install && npm run dev"
+  // Add the IDs of extensions you want installed when the container is created.
+  // "extensions": [
+  //   "bungcip.better-toml",
+  //   "acarreiro.calculate",
+  //   "streetsidesoftware.code-spell-checker",
+  //   "ms-azuretools.vscode-docker",
+  //   "editorconfig.editorconfig",
+  //   "dbaeumer.vscode-eslint",
+  //   "codezombiech.gitignore",
+  //   "eamodio.gitlens",
+  //   "wix.vscode-import-cost",
+  //   "yzhang.markdown-all-in-one",
+  //   "davidanson.vscode-markdownlint",
+  //   "eg2.vscode-npm-script",
+  //   "christian-kohler.npm-intellisense",
+  //   "christian-kohler.path-intellisense",
+  //   "esbenp.prettier-vscode",
+  //   "ducfilan.pug-formatter",
+  //   "mrmlnc.vscode-scss",
+  //   "foxundermoon.shell-format",
+  //   "stylelint.vscode-stylelint",
+  //   "octref.vetur",
+  //   "redhat.vscode-xml",
+  //   "redhat.vscode-yaml",
+  //   "formulahendry.auto-close-tag",
+  //   "formulahendry.auto-rename-tag",
+  //   "mikestead.dotenv",
+  //   "visualstudioexptteam.vscodeintellicode",
+  //   "wayou.vscode-todo-highlight",
+  //   "ahmadawais.shades-of-purple",
+  //   "johnpapa.vscode-peacock",
+  //   "ibm.output-colorizer",
+  //   "orta.vscode-jest"
+  // ],
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+
+
+  // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+  // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+
+  // Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "vscode"
+}

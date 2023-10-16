@@ -10,6 +10,6 @@ RUN npm run generate
 
 ### STAGE 2: NGINX ###
 FROM nginx:stable-alpine
-COPY --from=build /usr/src/app/public_html /usr/share/nginx/html
+COPY --from=build /usr/src/app/docker/public_html /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

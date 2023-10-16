@@ -17,6 +17,10 @@ VERSION=$(shell ./version.sh)
 
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+buildContainer: ## Build docker image
+	docker build -t $(APP_TAG) .
+runContainer: ## Run docker image
+	docker run --name $(APP_NAME) --rm -d -p $(PORT):80 $(APP_TAG)
 build: ## Build docker image.
 	docker build -t $(APP_TAG) ./docker/web
 build-nc: ## Build the container without caching.
